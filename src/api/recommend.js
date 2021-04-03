@@ -20,6 +20,10 @@ export function getRecommend() {
   return jsonp(url, data, options)
 }
 
+/**
+ * 获取歌单
+ * @returns {Promise<unknown>}
+ */
 export function getDiscList() {
   const url = '/api/getDiscList'
   const data = Object.assign({}, commonParams, {
