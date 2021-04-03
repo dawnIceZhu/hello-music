@@ -1,13 +1,18 @@
 <template>
   <div class="home">
-<!--    <img alt="Vue logo" src="../assets/image/logo.png">-->
+    <m-header/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
+import MHeader from "@/components/m-header/m-header";
+
 export default {
-  name: 'Home'
+  name: 'Home',
+  components: {
+    MHeader
+  }
 }
 </script>
