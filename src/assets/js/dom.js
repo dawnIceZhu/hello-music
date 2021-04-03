@@ -6,11 +6,9 @@
  * @param className 类名
  */
 export function addClass(el, className) {
-  // 判断这个dom对象有这个class的时候什么都不做
   if (hasClass(el, className)) {
     return
   }
-  // 获取class
   let newClass = el.className.split(' ')
   newClass.push(className)
   el.className = newClass.join(' ')
@@ -23,7 +21,6 @@ export function addClass(el, className) {
  * @returns {boolean}
  */
 export function hasClass(el, className) {
-  // 创建正则
   let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.className)
 }

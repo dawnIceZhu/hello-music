@@ -3,7 +3,9 @@
     <div class="slider-group" ref="sliderGroup">
       <slot/>
     </div>
-    <div class="dots"></div>
+    <div class="dots">
+      <span class="dot" v-for="(item, index) in dots" :key="index" :class="{active: currentPageIndex === index}"></span>
+    </div>
   </div>
 </template>
 
@@ -14,14 +16,17 @@ import {addClass} from "@/assets/js/dom"
 export default {
   name: "slider",
   data() {
-    return {}
+    return {
+      dots: [],
+      currentPageIndex: 0
+    }
   },
   props: {
     loop: {
       type: Boolean,
       default: true
     },
-    autoplay: {
+    autoPlay: {
       type: Boolean,
       default: true
     },
@@ -32,46 +37,76 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this._setSliderWidth() // 横向滚动，要先设置slider的宽度
-      this._initSlider() // 初始化BetterScroll在mounted里，等dom已经ready的时候
-    }, 20) // 浏览器的刷新通常是17毫秒一次，初始化操作放在20毫秒后，比较保险
+      this._setSliderWidth()
+      this._initDots()
+      this._initSlider()
+
+      if (this.autoPlay) {
+        this._play()
+      }
+    }, 20)
+
+    window.addEventListener('resize', () => {
+      if (!this.slider) {
+        return
+      }
+      this._setSliderWidth(true)
+      this.slider.refresh()
+    })
   },
   methods: {
-    _setSliderWidth() {
-      // 获得sliderGroup的children有多少个元素
+    _setSliderWidth(isResize) {
       this.children = this.$refs.sliderGroup.children
-      // 设置sliderGroup的宽度
+
       let width = 0
-      // 轮播图宽度是一屏，slider的宽度=所有轮播图宽度之和
       let sliderWidth = this.$refs.slider.clientWidth
-      // 计算整个轮播的视口应该有多宽
       for (let i = 0; i < this.children.length; i++) {
-        // 获取到每一个子元素
         let child = this.children[i]
-        // 轮播组件设置样式，让img自适应宽度
         addClass(child, 'slider-item')
 
         child.style.width = sliderWidth + 'px'
         width += sliderWidth
       }
 
-      // 因为bscroll为了无缝切换轮播，会前后克隆一个child，所以我们算宽度要加两个，如果是窗口改变，那么不增加，之前已经加过了
-      if (this.loop) {
+      if (this.loop && !isResize) {
         width += 2 * sliderWidth
       }
       this.$refs.sliderGroup.style.width = width + 'px'
     },
+    _initDots() {
+      this.dots = new Array(this.children.length)
+    },
     _initSlider() {
       this.slider = new BScoll(this.$refs.slider, {
-        scrollX: true, // 允许横向滚动
-        scrollY: false, // 不允许纵向滚动
+        scrollX: true,
+        scrollY: false,
         momentum: false,
         snap: true,
         snapLoop: this.loop,
         snapThreshold: 0.3,
         snapSpeed: 400,
-        click: true
       })
+      this.slider.on('scrollEnd', () => {
+        let pageIndex = this.slider.getCurrentPage().pageX
+        if (this.loop) {
+          pageIndex -= 1
+        }
+        this.currentPageIndex = pageIndex
+
+        if (this.autoPlay) {
+          clearTimeout(this.timer)
+          this._paly()
+        }
+      })
+    },
+    _paly() {
+      let pageIndex = this.currentPageIndex + 1
+      if (this.loop) {
+        pageIndex += 1
+      }
+      this.timer = setTimeout(() => {
+        this.slider.goToPage(pageIndex, 0, 400)
+      }, this.interval)
     }
   }
 }
