@@ -36,7 +36,7 @@
 <script>
 // @ is an alias to /src
 import {getRecommend, getDiscList} from "@/api/recommend"
-import {ERR_OK} from "@/assets/js/config"
+import {ERR_OK} from "@/api/config"
 import Slider from "@/base/slider/slider"
 import Scroll from "@/base/scroll/scroll"
 import Loading from "@/base/loading/loading"

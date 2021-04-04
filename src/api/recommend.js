@@ -3,7 +3,7 @@
  */
 
 import jsonp from '@/assets/js/jsonp'
-import {commonParams, options} from "@/assets/js/config"
+import {commonParams, options} from "@/api/config"
 import axios from "axios"
 
 /**

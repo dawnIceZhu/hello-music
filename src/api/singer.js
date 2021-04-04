@@ -3,7 +3,7 @@
  */
 
 // import jsonp from '@/assets/js/jsonp'
-import {commonParams} from "@/assets/js/config"
+import {commonParams} from "@/api/config"
 import axios from "axios"
 
 export function getSingerList() {
