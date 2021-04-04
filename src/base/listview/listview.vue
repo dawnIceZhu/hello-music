@@ -23,12 +23,16 @@
     <div class="list-fixed" v-show="fixedTitle" ref="fixed">
       <h1 class="fixed-title">{{ fixedTitle }}</h1>
     </div>
+    <div class="loading-container" v-show="!data.length">
+      <loading/>
+    </div>
   </scroll>
 </template>
 
 <script>
 import Scroll from '@/base/scroll/scroll'
 import {getData} from "@/assets/js/dom"
+import Loading from "@/base/loading/loading"
 
 const ANCHOR_HEIGHT = 18
 const TITLE_HEIGHT = 30
@@ -146,7 +150,7 @@ export default {
       this.$refs.fixed.style.transform = `translate3d(0, ${fixedTop}px, 0)`
     }
   },
-  components: {Scroll}
+  components: {Loading, Scroll}
 }
 </script>
 
