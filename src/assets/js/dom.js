@@ -24,3 +24,20 @@ export function hasClass(el, className) {
   let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.className)
 }
+
+/**
+ * 设置或者获取dom元素的data-属性
+ * @param el dom
+ * @param name name
+ * @param val val
+ * @returns {ASTNode|string|*|void}
+ */
+export function getData(el, name, val) {
+  const prefix = 'data-'
+  name = prefix + name
+  if (val) {
+    return el.setAttribute(name, val)
+  } else {
+    return el.getAttribute(name)
+  }
+}
