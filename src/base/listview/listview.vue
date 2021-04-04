@@ -14,7 +14,7 @@
     </ul>
     <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
       <ul>
-        <li v-for="(item, index) in shortcutList" class="item" :key="index" :data-index="index"
+        <li v-for="(item, index) in shortcutlist" class="item" :key="index" :data-index="index"
             :class="{'current': currentIndex === index}">
           {{ item }}
         </li>
@@ -61,9 +61,9 @@ export default {
     }
   },
   computed: {
-    shortcutList() {
+    shortcutlist() {
       return this.data.map((group) => {
-        return group.title.substring(0, 1)
+        return group.title.substr(0, 1)
       })
     },
     fixedTitle() {
@@ -100,7 +100,7 @@ export default {
       } else if (index > this.listHeight.length - 2) {
         index = this.listHeight.length - 2
       }
-      this.scroll = -this.listHeight[index]
+      this.scrollY = -this.listHeight[index]
       this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
     },
     _calculateHeight() {
@@ -147,7 +147,7 @@ export default {
         return
       }
       this.fixedTop = fixedTop
-      this.$refs.fixed.style.transform = `translate3d(0, ${fixedTop}px, 0)`
+      this.$refs.fixed.style.transform = `translate3d(0, ${fixedTop}px, 0`
     }
   },
   components: {Loading, Scroll}
