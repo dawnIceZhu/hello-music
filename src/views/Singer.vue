@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-    歌手
+    <listview :data="singers"/>
   </div>
 </template>
 
@@ -8,12 +8,14 @@
 import {getSingerList} from "@/api/singer"
 import {ERR_OK} from "@/api/config"
 import Singer from "@/assets/js/singer"
+import Listview from "@/base/listview/listview"
 
 const HOT_NAME = '热门'
 const HOS_SINGER_LET = 10
 
 export default {
   name: "Singer",
+  components: {Listview},
   data() {
     return {
       singers: []
@@ -26,8 +28,7 @@ export default {
     _getSingerList() {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
-          this.singers = res.data.list
-          console.log(this._normalizeSinger(this.singers))
+          this.singers = this._normalizeSinger(res.data.list)
         }
       })
     },
