@@ -30,7 +30,13 @@ const routes = [
   {
     path: '/singer',
     name: '/Singer',
-    component: () => import('../views/Singer')
+    component: () => import('../views/Singer'),
+    children: [
+      {
+        path: ':id',
+        component: () => import('../views/SingerDetail')
+      }
+    ]
   }
 ]
 
