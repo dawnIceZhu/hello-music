@@ -7,12 +7,21 @@
     <div class="bg-image" :style="bgStyle">
       <div class="filter"></div>
     </div>
+    <scroll :data="songs" class="list">
+      <div class="song-list-wrapper">
+        <song-list :songs="songs"/>
+      </div>
+    </scroll>
   </div>
 </template>
 
 <script>
+import Scroll from "@/base/scroll/scroll"
+import SongList from "@/base/song-list/song-list"
+
 export default {
   name: "music-list",
+  components: {SongList, Scroll},
   props: {
     bgImage: {
       type: String,
