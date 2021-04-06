@@ -7,7 +7,9 @@
     <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="filter"></div>
     </div>
-    <scroll :data="songs" class="list" ref="list">
+    <div class="bg-layer" ref="layer"></div>
+    <scroll @scroll="scroll" :probe-type="probeType" :listen-scroll="listenScroll" :data="songs" class="list"
+            ref="list">
       <div class="song-list-wrapper">
         <song-list :songs="songs"/>
       </div>
@@ -19,8 +21,15 @@
 import Scroll from "@/base/scroll/scroll"
 import SongList from "@/base/song-list/song-list"
 
+const RESERVED_HEIGHT = 40
+
 export default {
   name: "music-list",
+  data() {
+    return {
+      scrollY: 0
+    }
+  },
   components: {SongList, Scroll},
   props: {
     bgImage: {
@@ -39,7 +48,25 @@ export default {
     }
   },
   mounted() {
-    this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
+    this.imageHeight = this.$refs.bgImage.clientHeight
+    this.minTranlateY = -this.imageHeight + RESERVED_HEIGHT
+    this.$refs.list.$el.style.top = `${this.imageHeight}px`
+  },
+  created() {
+    this.probeType = 3
+    this.listenScroll = true
+  },
+  methods: {
+    scroll(pos) {
+      this.scrollY = pos.y
+    }
+  },
+  watch: {
+    scrollY(newY) {
+      let translateY = Math.max(this.minTranlateY, newY)
+      this.$refs.layer.style['transform'] = `translate3d(0, ${translateY}px, 0)`
+      this.$refs.layer.style['webkitTransform'] = `translate3d(0, ${translateY}px, 0)`
+    }
   },
   computed: {
     bgStyle() {
