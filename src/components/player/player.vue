@@ -61,7 +61,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"></audio>
   </div>
 </template>
 
@@ -74,6 +74,11 @@ const TRANSFORM = prefixStyle('transform')
 
 export default {
   name: "player",
+  data() {
+    return {
+      songReady: false
+    }
+  },
   computed: {
     cdCls() {
       return this.playing ? 'play' : 'play pause'
@@ -140,21 +145,44 @@ export default {
       this.$refs.cdWrapper.style[TRANSFORM] = ''
     },
     togglePlaying() {
+      // if (!this.songReady) {
+      //   return
+      // }
       this.setPlayingState(!this.playing)
     },
     next() {
+      // if (!this.songReady) {
+      //   return
+      // }
       let index = this.currentIndex + 1
       if (index === this.playList.length) {
         index = 0
       }
       this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
     },
     prev() {
+      // if (!this.songReady) {
+      //   return
+      // }
       let index = this.currentIndex + 1
       if (index === -1) {
         index = this.playList.length - 1
       }
       this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
+    },
+    ready() {
+      this.songReady = true
+    },
+    error() {
+
     },
     _getPosAndScale() {
       const targetWidth = 40
