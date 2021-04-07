@@ -16,7 +16,7 @@
           <div class="middle-l">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd">
-                <img class="image" :src="currentSong.image" alt="">
+                <img class="image" :class="cdCls" :src="currentSong.image" alt="">
               </div>
             </div>
           </div>
@@ -45,7 +45,9 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="icon">
-          <img width="40" height="40" :src="currentSong.image" alt="">
+          <div class="imgWrapper">
+            <img :class="cdCls" width="40" height="40" :src="currentSong.image" alt="">
+          </div>
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSong.name"></h2>
@@ -73,6 +75,9 @@ const TRANSFORM = prefixStyle('transform')
 export default {
   name: "player",
   computed: {
+    cdCls() {
+      return this.playing ? 'play' : 'play pause'
+    },
     playIcon() {
       return this.playing ? 'icon-pause' : 'icon-play'
     },
