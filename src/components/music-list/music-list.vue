@@ -1,6 +1,6 @@
 <template>
   <div class="music-list">
-    <div class="back">
+    <div class="back" @click="back">
       <i class="icon-back"></i>
     </div>
     <h1 class="title" v-html="title"></h1>
@@ -62,6 +62,9 @@ export default {
   methods: {
     scroll(pos) {
       this.scrollY = pos.y
+    },
+    back() {
+      this.$router.back()
     }
   },
   watch: {
